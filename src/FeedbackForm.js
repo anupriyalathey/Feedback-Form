@@ -1,4 +1,17 @@
 import React, { Component } from 'react';
+import { Container, Typography, FormLabel, RadioGroup, Paper, Radio, FormControlLabel, Button, FormControl } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    ochre: {
+      main: '#E3D026',
+      light: '#E9DB5D',
+      dark: '#A29415',
+      contrastText: '#242105',
+    },
+  },
+});
 
 class FeedbackForm extends Component {
   constructor(props) {
@@ -42,34 +55,54 @@ class FeedbackForm extends Component {
 
   render() {
     const { questions, choices, selectedChoices } = this.state;
-
+    
     return (
-      <div>
-        <form>
+      
+      <div style={{ backgroundColor: '#FFD36C', color: 'white' }}>
+      <Container style={{ backgroundColor: '#ffb404', color: 'white'}}
+>        
+        <Typography variant="h3" align="center" gutterBottom paddingTop={2} fontWeight="Bold">
+          Share Your Feedback
+        </Typography>
+        {/* <form> */}
           {questions.map((question, index) => (
-            <div key={index}>
-              <p>{question}</p>
-              {choices[index].map((choice, choiceIndex) => (
-                <label key={choiceIndex}>
-                  <input
-                    type="radio"
-                    name={`choice-${index}`}
-                    value={choice}
-                    checked={selectedChoices[question] === choice}
-                    onChange={() => this.handleChoiceChange(question, choice)}
-                  />
-                  {choice}
-                </label>
-              ))}
-            </div>
+            <div key={index} style={{ marginBottom: '16px' } }>
+              <Paper elevation={3} style={{ padding: '16px' ,backgroundColor: '#FFF8E8'}}>
+                <Typography variant="h6" align="center" gutterBottom fontWeight="Bold" color='#635739'>
+                  {question}
+                </Typography>
+              
+                  {choices[index].map((choice, choiceIndex) => (
+                    <div key={choiceIndex}>
+                    <FormControlLabel
+                      key={choiceIndex}
+                      value={choice}
+                      control={<Radio color="primary"
+                      checked={selectedChoices[question] === choice}                        
+                      onChange={() => this.handleChoiceChange(question, choice)}
+                      />}
+                      label={choice}
+                    />
+                    </div>
+                    ))}
+                    </Paper>
+                    </div>
           ))}
-          <button type="button" onClick={this.handleSubmit}>
-            Submit Feedback
-          </button>
-        </form>
+          <div style={{ textAlign: 'center', marginTop: '16px', paddingBottom: '16px' }}>
+            <Button variant="contained" 
+            // color="theme.ochre" 
+            // style={{ backgroundColor: '#43766C', color: 'white' }}
+            onClick={this.handleSubmit}>
+              Submit Feedback
+            </Button>
+          </div>
+        {/* </form> */}
+      </Container>
       </div>
     );
   }
 }
 
 export default FeedbackForm;
+
+
