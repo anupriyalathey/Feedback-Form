@@ -1,17 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Typography, FormLabel, RadioGroup, Paper, Radio, FormControlLabel, Button, FormControl } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    ochre: {
-      main: '#E3D026',
-      light: '#E9DB5D',
-      dark: '#A29415',
-      contrastText: '#242105',
-    },
-  },
-});
+import { Container, Dialog, DialogContent, DialogContentText, DialogActions, DialogTitle, Typography, FormLabel, RadioGroup, Paper, Radio, FormControlLabel, Button, FormControl } from '@mui/material';
 
 class FeedbackForm extends Component {
   constructor(props) {
@@ -20,6 +8,8 @@ class FeedbackForm extends Component {
       questions: [],
       choices: [],
       selectedChoices: {},
+      isDialogOpen: false,
+
     };
   }
 
@@ -44,6 +34,14 @@ class FeedbackForm extends Component {
     this.setState({ selectedChoices });
   };
 
+  handleOpenDialog = () => {
+    this.setState({ isDialogOpen: true });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ isDialogOpen: false });
+  };
+
   handleSubmit = () => {
     const { questions, selectedChoices } = this.state;
     const feedback = {
@@ -51,20 +49,19 @@ class FeedbackForm extends Component {
       choices: questions.map(question => selectedChoices[question]),
     };
     console.log('Submitted Feedback:', feedback);
+    this.handleOpenDialog();
   };
 
   render() {
-    const { questions, choices, selectedChoices } = this.state;
+    const { questions, choices, selectedChoices, isDialogOpen } = this.state;
     
     return (
-      
       <div style={{ backgroundColor: '#FFD36C', color: 'white' }}>
       <Container style={{ backgroundColor: '#ffb404', color: 'white'}}
 >        
         <Typography variant="h3" align="center" gutterBottom paddingTop={2} fontWeight="Bold">
           Share Your Feedback
         </Typography>
-        {/* <form> */}
           {questions.map((question, index) => (
             <div key={index} style={{ marginBottom: '16px' } }>
               <Paper elevation={3} style={{ padding: '16px' ,backgroundColor: '#FFF8E8'}}>
@@ -90,13 +87,21 @@ class FeedbackForm extends Component {
           ))}
           <div style={{ textAlign: 'center', marginTop: '16px', paddingBottom: '16px' }}>
             <Button variant="contained" 
-            // color="theme.ochre" 
-            // style={{ backgroundColor: '#43766C', color: 'white' }}
-            onClick={this.handleSubmit}>
+             onClick={this.handleSubmit}>
               Submit Feedback
             </Button>
           </div>
-        {/* </form> */}
+          <Dialog open={isDialogOpen} onClose={this.handleCloseDialog}>
+            <DialogTitle>Feedback Submitted</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Your feedback has been successfully submitted!</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCloseDialog} color="primary" autoFocus>
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
       </Container>
       </div>
     );
@@ -104,5 +109,3 @@ class FeedbackForm extends Component {
 }
 
 export default FeedbackForm;
-
-
